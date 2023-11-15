@@ -22,14 +22,17 @@ Examining the patterns of societal fears provides a deeper insight into the broa
 # Methods
 
 # Proposed timeline 
-1. Extract the general domains of fear in the global society from additional datasets 
-2. Perform NLP on the plot to extract movies that treat those fears. Class them by fear domains. 3. Analyze the data from those movies (number of movies, box office revenue, release date) 
-4. Draw plots depicting our results 
-5. Create the website  
+1. Extract the general domains of fear in the global society from articles
+2. Process the original data: clean, merge and display general interesting features of our data
+3. Process the additional data: clean and merge it with the original data
+4. Perform NLP on the plot to extract movies that treat those fears. Class them by fear domains. 
+5. Analyze the data from those movies (number of movies, release date, IMDb reviews, ...) 
+4. Draw plots depicting interesting trends from our results
+5. Create the website, display all our interesting results and draw a conclusion of our analysis
 
 # Organization within the team: A list of internal milestones up until project Milestone P3. 
 Octavio and Faye were responsible for writing the README file.  
-Clara, Romain and Colin were responsible for writing the Notebook. Clara focused on the general handling pipelines. Romain did some research on potential additional dataset and contributed to the data handling pipelines part. Colin did some research on NLP methods and contributed to the data handling pipelines part. 
-We all did some personal research on the subject.  
+Clara, Romain and Colin were responsible for writing the Notebook. Clara focused on cleaning, merging and drawing general trends of the orginal dataset. Romain was responsible of handling the additional dataset. Colin started the NLP analysis on the plot summaries.
+We all did some personal research on the subject and helped eachother for our respective parts.  
 
 # Questions for TAs (optional): Add here any questions you have for us related to the proposed project.
