@@ -3,7 +3,9 @@ From Alien Invasions to Global Pandemics: Exploring the Evolution of Film Themes
 
 # Abstract 
 # A 150 word description of the project idea and goals. What’s the motivation behind your project? What story would you like to tell, and why? 
-In this project, we will analyze the chronological evolution of movies’ themes in relation to the society’s fears. Fears have evolved significantly over the decades, shifting from the apprehension of war in the mid-20th century to concerns about emerging technologies during the industrial era, and more recently, to anxieties surrounding pandemics and climate change. By analyzing movies’ emerging themes in the plot, the evolution of movies’ genre as well as the movies with the biggest box office revenue, we can depict how the movie industry responded to the emergence and disappearance of major fears in the society. This analysis can be conducted on a global scale as well as on a regional scale, revealing geo-political nuances and historical particularities.  Our analysis will rely on various data sources that depict the societal fears experienced during the 20th and 21st centuries.
+In this project, we will analyze the chronological evolution of movies’ themes in relation to society’s fears. Fears have evolved significantly over the decades, shifting from the apprehension of war in the mid-20th century to concerns about emerging technologies during the industrial era, and more recently, to anxieties surrounding pandemics and climate change.   
+By analyzing movies’ emerging themes in the plot, the evolution of movies’ genre as well as the movies’ success (based on the IMDb rating), we can depict how the movie industry responded to the emergence and disappearance of major fears in the society. This analysis can be conducted on a global scale as well as on a regional scale.  
+Examining the patterns of societal fears provides a deeper insight into the broader aspects of society. It reflects the historical, political and cultural context of the world across the years.
 
 # Research Questions: A list of research questions you would like to address during the project. 
 1. What are the primary domains of fear explored in the database's movies, and how do they evolve chronologically? 
@@ -21,10 +23,10 @@ The IMDb dataset and our dataset use different identifiers for movies, IMDb empl
 
 
 # Methods 
-NLP  
+Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies, namely the fear of war, of climate change, of corruption, of terrorism, of civilization collapse, of pandemic, of technology and of aliens.
 
 # Proposed timeline 
-1. Extract the general domains of fear in the global society from articles
+1. Assess a list of fears that we want to extract from movies plot
 2. Process the original data: clean, merge and display general interesting features of our data
 3. Process the additional data: clean and merge it with the original data
 4. Perform NLP on the plot to extract movies that treat those fears. Class them by fear domains. 
@@ -36,7 +38,7 @@ NLP
 # Organization within the team: A list of internal milestones up until project Milestone P3. 
 Octavio and Faye were responsible for writing the README file.  
 Clara, Romain and Colin were responsible for writing the Notebook. Clara focused on cleaning, merging and drawing general trends of the orginal dataset. Romain was responsible of handling the additional dataset. Colin started the NLP analysis on the plot summaries.
-We all did some personal research on the subject and helped eachother for our respective parts.  
+We all did some personal research on the subject and helped eachother for our respective parts.
 
 
 # Questions for TAs (optional): Add here any questions you have for us related to the proposed project.
