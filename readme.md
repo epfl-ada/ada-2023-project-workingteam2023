@@ -3,7 +3,7 @@ From Alien Invasions to Global Pandemics: Exploring the Evolution of Film Themes
 
 # Abstract 
 # A 150 word description of the project idea and goals. What’s the motivation behind your project? What story would you like to tell, and why? 
-In this project, we will analyze the chronological evolution of movies’ themes in relation to the society’s fears. Fears have evolved significantly over the decades, shifting from the apprehension of war in the mid-20th century to concerns about emerging technologies during the industrial era, and more recently, to anxieties surrounding pandemics and climate change. By analyzing movies’ emerging themes in the plot, the evolution of movies’ genre as well as the movies with the biggest box office revenue, we can depict how the movie industry responded to the emergence and disappearance of major fears in the society. This analysis can be conducted on a global scale as well as on a regional scale, revealing geo-political nuances and historical particularities.  Our analysis will rely on various data sources that depict the societal fears experienced during the 20th and 21st centuries.
+In this project, we will analyze the chronological evolution of movies’ themes in relation to society’s fears. Fears have evolved significantly over the decades, shifting from the apprehension of war in the mid-20th century to concerns about emerging technologies during the industrial era, and more recently, to anxieties surrounding pandemics and climate change. By analyzing movies’ emerging themes in the plot, the evolution of movies’ genre as well as the movies with the highest popularity, we can depict how the movie industry responded to the emergence and disappearance of major fears in the society. This analysis can be conducted on a global scale as well as on a regional scale, revealing geo-political nuances and historical particularities.  Our analysis will rely on various data sources that depict the societal fears experienced during the 20th and 21st centuries.
 
 # Research Questions: A list of research questions you would like to address during the project. 
 1. What are the primary domains of fear explored in the database's movies, and how do they evolve chronologically? 
@@ -21,7 +21,7 @@ The IMDb dataset and our dataset use different identifiers for movies, IMDb empl
 
 
 # Methods 
-NLP  
+Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies, namely the fear of war, of climate change, of corruption, of terrorism, of civilization collapse, of pandemic, of technology and of aliens.
 
 # Proposed timeline 
 1. Extract the general domains of fear in the global society from articles
