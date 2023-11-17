@@ -23,7 +23,7 @@ The IMDb dataset and our dataset use different identifiers for movies, IMDb empl
 
 
 # Methods 
-Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies, namely the fear of war, of climate change, of corruption, of terrorism, of civilization collapse, of pandemic, of technology and of aliens.
+Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies, namely the fear of war, of climate change, of corruption, of terrorism, of civilization collapse, of pandemic, of technology and of aliens. Although some themes already stand out, we will need to refine our methods for M3 in order to single out precise fears. The work done does however seem promising. 
 
 # Proposed timeline 
 1. Assess a list of fears that we want to extract from movies plot
