@@ -7,11 +7,13 @@ In this project, we will analyze the chronological evolution of movies’ themes
 
 # Research Questions: A list of research questions you would like to address during the project. 
 1. What are the primary domains of fear explored in the database's movies, and how do they evolve chronologically? 
-2. Are emerging fears covered in these movies related to historical events? 
-3. Do movies addressing current societal fears tend to achieve higher box office revenue compared to those exploring other themes? 
-4. What is the geographical distribution of the different fears adressed in international movies? 
-5. How has the number of movies addressing major global fears evolved since the dataset's inception? 
-6. What patterns emerge in the portrayal of fears in movies, and are there recurring combinations of fears frequently depicted on screen?  
+2. Do movies addressing current societal fears tend to have higher IMDb ratings compared to those exploring other themes? 
+3. How has the number of movies addressing major global fears evolved since the dataset's inception? 
+4. Are emerging fears covered in movies related to historical, political or cultural events?
+5. What is the geographical distribution of the different fears addressed in international movies? 
+6. What patterns emerge in the portrayal of fears in movies, and are there recurring combinations of fears frequently depicted on screen?
+7. What evolution of the society can we depict from all of the previous results?
+
 
 # Proposed additional datasets (if any): List the additional dataset(s) you want to use (if any), and some ideas on how you expect to get, manage, process, and enrich it/them. Show us that you’ve read the docs and some examples, and that you have a clear idea on what to expect. Discuss data size and format if relevant. It is your responsibility to check that what you propose is feasible. 
 1. Chapman University Survey of American Fears (CSAF) -> pas sûr encore 
