@@ -16,7 +16,7 @@ In this project, we will analyze the chronological evolution of movies’ themes
 
 
 # Proposed additional datasets (if any): List the additional dataset(s) you want to use (if any), and some ideas on how you expect to get, manage, process, and enrich it/them. Show us that you’ve read the docs and some examples, and that you have a clear idea on what to expect. Discuss data size and format if relevant. It is your responsibility to check that what you propose is feasible. 
-1. IMDb: Incorporating the IMDb dataset into our analysis provides additional insights into the movies. Since there is a lot of missing values for the movies' box office revenues, will use the weighted average ratings data from title.ratings.tsv.gz to quantify a movie's success. 
+1. IMDb: Incorporating the IMDb dataset into our analysis provides additional insights into the movies. Since there is a lot of missing values for the movies' box office revenues, will use the weighted average ratings data from title.ratings.tsv.gz to quantify a movie's success. IMDb is a recognised source for movie reviews. We therefore trust their methods for collecting and weighting this data. 
 The IMDb dataset and our dataset use different identifiers for movies, IMDb employs "tconst," while our dataset uses the Freebase movie ID. In order to merge these datasets, we must establish a link between the two sets of IDs. We retrieve the correspondance from the Wikidata query service by performing a query in SPARSQL. Subsequently, we generate a correspondence table, removing any duplicate entries. With this completed correspondence table, we can proceed to merge the two datasets seamlessly.
 
 
