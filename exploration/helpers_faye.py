@@ -170,7 +170,7 @@ def get_top_words(lda, count_vectorizer, n_words=3):
     total_word_counts = {}
 
     # Iterate over topics
-    for topic_idx, topic in enumerate(lda_.components_):
+    for topic_idx, topic in enumerate(lda.components_):
         # Get the top words for the current topic
         top_word_indices = topic.argsort()[:-n_words-1:-1]
         top_words = [feature_names[i] for i in top_word_indices]
