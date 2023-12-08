@@ -153,3 +153,36 @@ def print_lda_infos(lda, count_vectorizer, count_data, all_movies):
     print("\n")
     print("---------------------------------------------------------")
     print("\n")
+
+def get_top_words(lda, count_vectorizer, n_words=3):
+    """
+    Print the n top words accross all topics
+    params:
+        lda: the LDA model
+        count_vectorizer: the count vectorizer
+        n_words: the number of top words to print
+    """
+      
+    # Get the feature names (words) from the vectorizer
+    feature_names = count_vectorizer.get_feature_names_out()
+
+    # Initialize a dictionary to store the total word counts across all topics
+    total_word_counts = {}
+
+    # Iterate over topics
+    for topic_idx, topic in enumerate(lda_.components_):
+        # Get the top words for the current topic
+        top_word_indices = topic.argsort()[:-n_words-1:-1]
+        top_words = [feature_names[i] for i in top_word_indices]
+
+        # Update total word counts
+        for word in top_words:
+            total_word_counts[word] = total_word_counts.get(word, 0) + 1
+
+    # Sort the words by their total counts
+    sorted_words = sorted(total_word_counts.items(), key=lambda x: x[1], reverse=True)
+
+    # Get the top 3 words
+    top_words = [word for word, count in sorted_words[:n_words]]
+
+    return top_words
