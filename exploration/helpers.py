@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import requests
+import nltk
 
 
 
@@ -155,3 +156,33 @@ def print_lda_infos(lda, count_vectorizer, count_data, all_movies):
     print("\n")
     print("---------------------------------------------------------")
     print("\n")
+
+
+def preprocess_plot(plot):
+    """
+    Preprocess the plot of a movie by removing the stop words and lemmatizing the words
+    Inspired from https://www.datacamp.com/tutorial/text-analytics-beginners-nltk#
+
+    params:
+        plot: the plot of a movie
+
+    return:
+        the preprocessed plot
+    """
+
+
+    # Toeknization
+    plot_tokens = nltk.word_tokenize(plot)
+
+    # Remove stop words
+    stop_words = set(nltk.corpus.stopwords.words('english'))
+    plot_tokens = [token for token in plot_tokens if token not in stop_words]
+
+    # Lemmatization
+    lemmatizer = nltk.stem.WordNetLemmatizer()
+    plot_tokens = [lemmatizer.lemmatize(token) for token in plot_tokens]
+
+    # Join the tokens back into a string
+    plot = ' '.join(plot_tokens)
+
+    return plot
