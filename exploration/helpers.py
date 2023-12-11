@@ -31,49 +31,42 @@ def valid_format(date_string, date_format='%Y-%m-%d'):
 
 def keep_the_year(date_full, key):
     """
-    convert a column containing date with different format keeping only the year
-
+    convert a column containing date with different format keeping only the year using the pandas apply function
+    
     params: 
         date_full: a dataframe containing a column with date in different format
         key: the name of the column containing the date
-
+        
     return:
-        a dataframe containing only the year of each date
+        a dataframe containing only the year of each date, in place of the original column
     """
-    
-    # Converting tyhe date full column to a dataframe, and replacing the nan with null values
-    date_full = pd.DataFrame(date_full) 
-    date_full  = date_full.fillna(" ")
-    
-    # creating a dataframe with the same size as date_full, but with nan values
-    date_formated = pd.DataFrame(np.nan, index=date_full.index, columns=date_full.columns) 
 
-    # Define date formats
-    format1 = '%Y-%m-%d'
-    format2 = '%Y-%m'
-    format3 = '%Y'
-
-    # Iterate through the values in the datefull column, checking which format it matches, converting it to datetime format, and keeping only the year
-    for (index,i) in enumerate(date_full[key]):
+    def keep_the_year_apply_helper(date_string):
+        """
+        helper function for keep_the_year_apply
+        """
+        # Define date formats
+        format1 = '%Y-%m-%d'
+        format2 = '%Y-%m'
+        format3 = '%Y'
 
         # If the date is out of bounds, consider it as missing value and continue
-        if i > '2023' or i < '1800' or i == ' ':    # Even with different date formats the inequality works 
-            date_formated[key][index] = np.nan
-            continue
+        if str(date_string) > '2023' or str(date_string) < '1800' or str(date_string) == ' ' or str(date_string) == 'nan':    # Even with different date formats the inequality works
+            return np.nan
 
-        if valid_format(i, format1):
-            date_formated[key][index] = datetime.datetime.strptime(i, format1).date().year
-        elif valid_format(i, format2):
-            date_formated[key][index] = datetime.datetime.strptime(i, format2).date().year
-        elif valid_format(i, format3):
-            date_formated[key][index] = datetime.datetime.strptime(i, format3).date().year
+        if valid_format(date_string, format1):
+            return datetime.datetime.strptime(date_string, format1).date().year
+        elif valid_format(date_string, format2):
+            return datetime.datetime.strptime(date_string, format2).date().year
+        elif valid_format(date_string, format3):
+            return datetime.datetime.strptime(date_string, format3).date().year
         else: 
-            date_formated[key][index] = np.nan
+            return np.nan
         
-    #Converting to int
-    date_formated = date_formated.astype('Int64')
+    # Apply the helper function to the column
+    date_full[key] = date_full[key].apply(keep_the_year_apply_helper).astype('Int64')
 
-    return date_formated
+    return date_full
 
 
 
