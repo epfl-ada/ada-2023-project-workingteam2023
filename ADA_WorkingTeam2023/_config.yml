@@ -21,11 +21,11 @@
 title: How societal fears help you sell tickets to your movie
 # email: octavio.profetamachon@epfl.ch
 description: >- # this means to ignore newlines until "baseurl:"
-  A nice story cooked by Romain Bianchi, Faye Delacrétaz, Colin Hoffman, Octavio Profeta and Clara Wetzel 
+  A nice story cooked by Romain Bianchi, Faye Delacrétaz, Colin Hofmann, Octavio Profeta and Clara Wetzel 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-# twitter_username: aukethaviau
-# github_username:  OctavioProfeta
+twitter_username: aukethaviau
+github_username:  OctavioProfeta
 
 # Build settings
 theme: minima
