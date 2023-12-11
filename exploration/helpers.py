@@ -186,3 +186,30 @@ def preprocess_plot(plot):
     plot = ' '.join(plot_tokens)
 
     return plot
+
+
+def words_in_genres(words, genres):
+    """
+    Check if a word is in the list of genres of a movie
+
+    params:
+        words: a list of words
+        genres: the list of genres of a movie
+
+    return:
+        True if the word is in the list of genres
+        False otherwise
+    """
+
+    # Check if the genres are valid
+    if genres == np.nan or genres == [] or genres == None:
+        return False
+    
+    # Check if the words are in one of the genres
+    for genre in genres:
+        for word in words:
+            if word in genre:
+                return True
+        return False
+
+    
