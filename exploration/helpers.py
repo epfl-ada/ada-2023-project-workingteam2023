@@ -232,8 +232,19 @@ def get_cleaned_data(path):
 
 
 
-def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True):
+def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, force_reload=False, save=True):
     print("Loading and cleaning the summaries...")
+
+    #check if processed_summaries.tsv exists
+    try:
+        if force_reload:
+            raise FileNotFoundError
+        plot_summaries = pd.read_csv(path + 'moviesummaries/processed_summaries.tsv', sep='\t', header=0)
+        print("Summaries loaded from processed_summaries.tsv")
+        return plot_summaries
+    except FileNotFoundError:
+        print("processed_summaries.tsv not found, processing the summaries...")
+
     #load data/moviesummaries/plot_summaries.txt
     plot_summaries = pd.read_csv(path + 'moviesummaries/plot_summaries.txt', sep='\t', header=None)
     plot_summaries.columns = ["Wikipedia movie ID", "Summary"]
@@ -277,5 +288,10 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
 
     # join
     plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: ' '.join(x))
+
+    # save
+    if save:
+        print("Saving the processed summaries...")
+        plot_summaries.to_csv(path + 'moviesummaries/processed_summaries.tsv', sep='\t', index=False)
 
     return plot_summaries    
