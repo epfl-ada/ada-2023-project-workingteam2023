@@ -335,7 +335,7 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
     # remove punctuation
     if punctuation:
         print("Removing punctuation...")
-        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
+        #plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
 
     # remove stop words
     if stop_words or movie_film:
