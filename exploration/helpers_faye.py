@@ -3,9 +3,13 @@ import pandas as pd
 import numpy as np
 import datetime
 import requests
+import string
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 
 
@@ -335,8 +339,15 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
     # remove punctuation
     if punctuation:
         print("Removing punctuation...")
+        '''
+        ORIGINAL
         #plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
+        '''
+        # MODIFICATION
+        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word not in string.punctuation])
 
+    '''
+    ORIGINAL
     # remove stop words
     if stop_words or movie_film:
         print("Removing stop words / movie_film...")
@@ -347,6 +358,16 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
             stop_words.add('film')
             stop_words.add('movie')
         stop_words = set(stopwords.words('english'))
+        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
+    '''
+
+    # MODIFICATION
+    # remove stop words
+    if stop_words:
+        print("Removing stop words / movie_film...")
+        stop_words = set(stopwords.words('english'))
+        if movie_film:
+            stop_words.update(['film', 'films', 'movie', 'movies'])  # Use update to add multiple elements, ajouter '', ", ', ... ?
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
 
     # POS tag to remove NNP (proper nouns) and NNPS (plural proper nouns)
@@ -370,4 +391,3 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
         plot_summaries.to_csv(path + 'moviesummaries/processed_summaries.tsv', sep='\t', index=False)
 
     return plot_summaries
-
