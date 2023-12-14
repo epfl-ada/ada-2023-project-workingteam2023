@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 import datetime
 import requests
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+nltk.download('averaged_perceptron_tagger')
 
 
 def valid_format(date_string, date_format='%Y-%m-%d'):
