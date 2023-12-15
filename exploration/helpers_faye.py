@@ -311,8 +311,30 @@ def get_cleaned_data(path):
     return all_movies, character_metadata, name_clusters
 
 
-def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, force_reload=False, save=True):
+def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, remove_names = True, force_reload=False, save=True):
     print("Loading and cleaning the summaries...")
+
+    array_names = [
+    "john", "robert", "james", "william", "mary", "patricia", "jennifer", "linda", "elizabeth", "barbara",
+    "michael", "david", "richard", "joseph", "thomas", "charles", "christopher", "daniel", "matthew", "anthony",
+    "donald", "mark", "paul", "steven", "andrew", "kenneth", "george", "joshua", "brian", "kevin",
+    "ashley", "jessica", "amanda", "sarah", "melissa", "emily", "nicole", "kayla", "stephanie", "michelle",
+    "jacob", "christopher", "matthew", "joshua", "nicholas", "andrew", "daniel", "tyler", "joseph", "david",
+    "sophia", "emma", "olivia", "ava", "isabella", "mia", "abigail", "emily", "madison", "elizabeth",
+    "hannah", "amelia", "ella", "grace", "chloe", "charlotte", "avery", "sofia", "harper", "mila",
+    "ethan", "michael", "alexander", "william", "james", "christopher", "daniel", "matthew", "andrew", "joseph",
+    "david", "ryan", "jacob", "nicholas", "tyler", "emily", "madison", "emma", "hannah", "olivia", "alice", "tom", "jerry",
+    "frank", "joe",
+    "aarav", "aryan", "vivaan", "vihaan", "advait", "arjun", "reyansh", "ishaan", "kabir", "ritvik",
+    "ananya", "aaradhya", "pari", "kiara", "siya", "dia", "aisha", "riya", "avni", "zara",
+    "mohammed", "aman", "armaan", "aryan", "ishaan", "vihaan", "advait", "reyansh", "kabir", "vivaan",
+    "sanskriti", "ananya", "aaradhya", "pari", "kiara", "siya", "dia", "aisha", "riya", "avni",
+    "raj", "vijay", "kumar", "ramesh", "amit", "rakesh", "suresh", "pradeep", "vinod", "sunil",
+    "neeta", "sangeeta", "renu", "anita", "preeti", "neha", "seema", "meena", "suman", "arti",
+    "rahul", "amit", "vikas", "rajesh", "deepak", "sanjay", "ranjeet", "santosh", "ravi", "anil",
+    "smita", "pooja", "neha", "priya", "arti", "ritu", "swati", "anita", "kavita", "sangeeta",
+    "varun", "aditya", "arjun", "rohan", "rajat", "vishal", "vivek", "alok", "manish", "amit"
+    ]
 
     #check if processed_summaries.tsv exists
     try:
@@ -347,6 +369,12 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word not in string.punctuation])
         '''
 
+    # casefolding
+    if casefolding:
+        print("Casefolding...")
+        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word.lower() for word in x])
+
+    
     '''
     ORIGINAL
     # remove stop words
@@ -365,18 +393,23 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
     # MODIFICATION
     # remove stop words
     if stop_words:
-        print("Removing stop words / movie_film...")
+        print("Removing stop words...")
         stop_words = set(stopwords.words('english'))
         if movie_film:
-            stop_words.update(['film', 'films', 'movie', 'movies'])  # Use update to add multiple elements
+            print("Removing words movie and film...")
+            stop_words.update(['film', 'films', 'movie', 'movies'])  # Use update to add multiple elements           
+        if remove_names:
+            print("Removing common names...")
+            stop_words.update(array_names)
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
 
+    ''' 
     # POS tag to remove NNP (proper nouns) and NNPS (plural proper nouns)
     if pos_tag:
         print("POS tagging...")
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: nltk.pos_tag(x))
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word, tag in x if tag != 'NNP' and tag != 'NNPS'])
-
+    '''
     # lemmatize
     if lemmatize:
         print("Lemmatizing...")
