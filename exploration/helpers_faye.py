@@ -339,12 +339,13 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
     # remove punctuation
     if punctuation:
         print("Removing punctuation...")
-        '''
-        ORIGINAL
-        #plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
+        
+        #ORIGINAL
+        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
         '''
         # MODIFICATION
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word not in string.punctuation])
+        '''
 
     '''
     ORIGINAL
@@ -367,7 +368,7 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
         print("Removing stop words / movie_film...")
         stop_words = set(stopwords.words('english'))
         if movie_film:
-            stop_words.update(['film', 'films', 'movie', 'movies'])  # Use update to add multiple elements, ajouter '', ", ', ... ?
+            stop_words.update(['film', 'films', 'movie', 'movies'])  # Use update to add multiple elements
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
 
     # POS tag to remove NNP (proper nouns) and NNPS (plural proper nouns)
