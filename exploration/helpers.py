@@ -236,27 +236,10 @@ def get_cleaned_data(path):
 def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, remove_names = True, force_reload=False, save=True):
     print("Loading and cleaning the summaries...")
 
-    array_names = [
-    "john", "robert", "james", "william", "mary", "patricia", "jennifer", "linda", "elizabeth", "barbara",
-    "michael", "david", "richard", "joseph", "thomas", "charles", "christopher", "daniel", "matthew", "anthony",
-    "donald", "mark", "paul", "steven", "andrew", "kenneth", "george", "joshua", "brian", "kevin",
-    "ashley", "jessica", "amanda", "sarah", "melissa", "emily", "nicole", "kayla", "stephanie", "michelle",
-    "jacob", "christopher", "matthew", "joshua", "nicholas", "andrew", "daniel", "tyler", "joseph", "david",
-    "sophia", "emma", "olivia", "ava", "isabella", "mia", "abigail", "emily", "madison", "elizabeth",
-    "hannah", "amelia", "ella", "grace", "chloe", "charlotte", "avery", "sofia", "harper", "mila",
-    "ethan", "michael", "alexander", "william", "james", "christopher", "daniel", "matthew", "andrew", "joseph",
-    "david", "ryan", "jacob", "nicholas", "tyler", "emily", "madison", "emma", "hannah", "olivia", "alice", "tom", "jerry",
-    "frank", "joe",
-    "aarav", "aryan", "vivaan", "vihaan", "advait", "arjun", "reyansh", "ishaan", "kabir", "ritvik",
-    "ananya", "aaradhya", "pari", "kiara", "siya", "dia", "aisha", "riya", "avni", "zara",
-    "mohammed", "aman", "armaan", "aryan", "ishaan", "vihaan", "advait", "reyansh", "kabir", "vivaan",
-    "sanskriti", "ananya", "aaradhya", "pari", "kiara", "siya", "dia", "aisha", "riya", "avni",
-    "raj", "vijay", "kumar", "ramesh", "amit", "rakesh", "suresh", "pradeep", "vinod", "sunil",
-    "neeta", "sangeeta", "renu", "anita", "preeti", "neha", "seema", "meena", "suman", "arti",
-    "rahul", "amit", "vikas", "rajesh", "deepak", "sanjay", "ranjeet", "santosh", "ravi", "anil",
-    "smita", "pooja", "neha", "priya", "arti", "ritu", "swati", "anita", "kavita", "sangeeta",
-    "varun", "aditya", "arjun", "rohan", "rajat", "vishal", "vivek", "alok", "manish", "amit"
-    ]
+    #dataset downloaded from: https://data.world/davidam/international-names/workspace/data-dictionary 
+    names = pd.read_csv(path + 'moviesummaries/interall.csv')
+    array_names = names.iloc[:,0].dropna().tolist()
+    array_names = [s.lower() for s in array_names]
 
     #check if processed_summaries.tsv exists
     try:
