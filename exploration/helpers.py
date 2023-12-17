@@ -233,7 +233,7 @@ def get_cleaned_data(path):
 
 
 
-def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, remove_names = True, force_reload=False, save=True):
+def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, remove_names = True, force_reload=False, save=True):
     print("Loading and cleaning the summaries...")
 
     array_names = [
@@ -283,7 +283,12 @@ def get_summaries(path, punctuation=True, stop_words=True, lemmatize=True, pos_t
     # remove punctuation
     if punctuation:
         print("Removing punctuation...")
-        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word not in string.punctuation])
+        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
+
+    # casefolding
+    if casefolding:
+        print("Casefolding...")
+        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word.lower() for word in x])
 
     '''
     ORIGINAL
