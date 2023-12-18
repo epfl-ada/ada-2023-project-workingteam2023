@@ -4,11 +4,11 @@
 
 layout: page
 ---
-{: style="text-align: justify; font-size: 2em;"}
-So, you're a young and up and coming movie director...
+{: style="text-align: center; font-size: 3em;"}
+Are we scared or afraid ?
 
 {: style="text-align: justify;"}
-...well, you came to the right place ! Here at the ADA WorkingTeam2023™, we value your inspiration and dedidaction. That's why we've created this webstory, to help you find the perfect idea for your next movie !
+Here, at WorkingTeam2023™, we want to know what are societal fears. So, what are we *afraid* of ? We are talking about societal fears, like the fear of a global pandemic or the fear of a nuclear war, not the fear of spiders or the fear of heights. [The Chapman University](https://www.chapman.edu/wilkinson/research-centers/babbie-center/survey-american-fears.aspx) conducts yearly studies based on surveys in the United States of America, giving us a starting point for an answer. 
 
 {: style="text-align: justify; font-size: 2em;"}
 Let's dig in then, shall we ?

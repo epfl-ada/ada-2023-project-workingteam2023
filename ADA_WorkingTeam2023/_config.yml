@@ -23,9 +23,9 @@ title: How societal fears help you sell tickets to your movie
 description: >- # this means to ignore newlines until "baseurl:"
   A nice story cooked by Romain Bianchi, Faye Delacrétaz, Colin Hofmann, Octavio Profeta and Clara Wetzel 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: aukethaviau
-github_username:  OctavioProfeta
+url: "http://WorkingTeam2023.com" # the base hostname & protocol for your site, e.g. http://example.com
+# twitter_username: aukethaviau
+# github_username:  OctavioProfeta
 
 # Build settings
 theme: minima
