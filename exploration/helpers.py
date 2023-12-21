@@ -11,7 +11,6 @@ nltk.download('averaged_perceptron_tagger')
 
 
 
-
 def valid_format(date_string, date_format='%Y-%m-%d'):
     """
     check if the string in input is in the given format
@@ -113,6 +112,8 @@ def link_tconst_freebaseID():
         freebase_id.append(freebase_id_val)
 
     return pd.DataFrame(data={'tconst': tconst, 'Freebase movie ID': freebase_id})
+
+
 
 def print_lda_infos(lda, count_vectorizer, count_data, all_movies):
     """
@@ -228,7 +229,25 @@ def get_cleaned_data(path):
 
 
 
-def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, remove_names = True, force_reload=False, save=True):
+def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, lemmatize=True, movie_film=True, remove_names = True, force_reload=False, save=True):
+    '''
+    Get the summaries from the given path and clean them
+    
+    params:
+        path: the path of the folder containing the data
+        punctuation: boolean to remove punctuation
+        casefolding: boolean to apply casefolding
+        stop_words: boolean to remove stop words
+        lemmatize: boolean to lemmatize
+        movie_film: boolean to remove the words film and films
+        remove_names: boolean to remove the most common names
+        force_reload: boolean to force the reload of the processed summaries
+        save: boolean to save the processed summaries
+        
+    return:
+        the cleaned summaries
+    '''
+    
     print("Loading and cleaning the summaries...")
 
     # Dataset downloaded from: https://data.world/davidam/international-names/workspace/data-dictionary 
@@ -250,25 +269,21 @@ def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, l
     plot_summaries = pd.read_csv(path + 'moviesummaries/plot_summaries.txt', sep='\t', header=None)
     plot_summaries.columns = ["Wikipedia movie ID", "Summary"]
 
-    # Summaries
-    # First we copy all_movies and filter to only keep movies with a plot summary
-    plot_summaries = plot_summaries.dropna(subset=['Summary'])
-
-    # tokenize
+    # Tokenize
     print("Tokenizing...")
     plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: word_tokenize(x))
 
-    # remove punctuation
+    # Remove punctuation
     if punctuation:
         print("Removing punctuation...")
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.isalpha()])
 
-    # casefolding
+    # Casefolding
     if casefolding:
         print("Casefolding...")
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word.lower() for word in x])
 
-    # remove stop words and common words
+    # Remove stop words and common words
     if stop_words:
         print("Removing stop words and common words/names...")
         stop_words = set(stopwords.words('english'))
@@ -280,16 +295,16 @@ def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, l
             stop_words.update(array_names)
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
 
-    # lemmatize
+    # Lemmatize
     if lemmatize:
         print("Lemmatizing...")
         lemmatizer = nltk.stem.WordNetLemmatizer()
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [lemmatizer.lemmatize(word) for word in x])
 
-    # join
+    # Join
     plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: ' '.join(x))
 
-    # save
+    # Save
     if save:
         print("Saving the processed summaries...")
         plot_summaries.to_csv(path + 'moviesummaries/processed_summaries.tsv', sep='\t', index=False)
