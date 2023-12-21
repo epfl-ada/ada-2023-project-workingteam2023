@@ -50,7 +50,7 @@ def keep_the_year(date_full, key):
         """
         helper function for keep_the_year_apply
         """
-        # Define date formats
+        # Define date formats regarding the three different formats present in the dataset
         format1 = '%Y-%m-%d'
         format2 = '%Y-%m'
         format3 = '%Y'
@@ -167,45 +167,40 @@ def get_cleaned_data(path):
         the cleaned datasets
     """
     print("Loading the data...")
-    #load data/moviesummaries/character.metadata.tsv
+    # Load data/moviesummaries/character.metadata.tsv
     character_metadata = pd.read_csv(path + 'moviesummaries/character.metadata.tsv', sep='\t', header=None)
     character_metadata.columns = ["Wikipedia movie ID", "Freebase movie ID", "Movie release date", "Character name", "Actor date of birth", "Actor gender", 
                                 "Actor height", "Actor ethnicity", "Actor name", "Actor age", "Freebase character/actor map ID", 
                                 "Freebase character ID", "Freebase actor ID"]
 
-    #load data/moviesummaries/plot_summaries.txt
+    # Load data/moviesummaries/plot_summaries.txt
     plot_summaries = get_summaries(path)
 
-    #load data/moviesummaries/movie.metadata.tsv
+    # Load data/moviesummaries/movie.metadata.tsv
     movie_metadata = pd.read_csv(path + 'moviesummaries/movie.metadata.tsv', sep='\t', header=None)
     movie_metadata.columns = ["Wikipedia movie ID", "Freebase movie ID", "Movie name", "Movie release date", "Movie revenue", "Movie runtime",
                             "Movie languages", "Movie countries", "Movie genres"]
 
-    #load data/moviesummaries/name.clusters.txt
+    # Load data/moviesummaries/name.clusters.txt
     name_clusters = pd.read_csv(path + 'moviesummaries/name.clusters.txt', sep='\t', header=None)
     name_clusters.columns = ["Character name", "Freebase character/actor map ID"]
-
 
     print("Cleaning the data...")
     # Merge 'left' the movie_metadata and plot_summaries dataframes on the Wikipedia movie ID column
     all_movies = movie_metadata.merge(plot_summaries, on="Wikipedia movie ID", how="left")
 
-
-    # drop one of each pair of duplicates
+    # Drop one of each pair of duplicates
     all_movies.drop_duplicates(subset=["Movie name", "Movie release date", "Movie revenue", "Movie languages", "Movie genres", "Movie countries", "Movie runtime", "Summary"], inplace=True, keep="first")
     
-
-    #Converting the movie release date to keep only the year for the all_movie table
+    # Converting the movie release date to keep only the year for the all_movie table
     all_movies = keep_the_year(all_movies, key='Movie release date')
-
 
     # Some columns contains dicts. Let's only keep the values of these dicts as lists since we don't care about their keys
     all_movies['Movie genres'] = [list(eval(genre).values()) for genre in all_movies['Movie genres']]
     all_movies['Movie languages'] = [list(eval(genre).values()) for genre in all_movies['Movie languages']]
     all_movies['Movie countries'] = [list(eval(genre).values()) for genre in all_movies['Movie countries']]
 
-
-    #Converting the dates to keep only the year for the character_metadata table
+    # Converting the dates to keep only the year for the character_metadata table
     character_metadata = keep_the_year(character_metadata, key='Movie release date')
     character_metadata = keep_the_year(character_metadata, key='Actor date of birth')
 
@@ -236,12 +231,12 @@ def get_cleaned_data(path):
 def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, lemmatize=True, pos_tag=True, movie_film=True, remove_names = True, force_reload=False, save=True):
     print("Loading and cleaning the summaries...")
 
-    #dataset downloaded from: https://data.world/davidam/international-names/workspace/data-dictionary 
+    # Dataset downloaded from: https://data.world/davidam/international-names/workspace/data-dictionary 
     names = pd.read_csv(path + 'moviesummaries/interall.csv')
     array_names = names.iloc[:,0].dropna().tolist()
     array_names = [s.lower() for s in array_names]
 
-    #check if processed_summaries.tsv exists
+    # Check if processed_summaries.tsv exists
     try:
         if force_reload:
             raise FileNotFoundError
@@ -251,11 +246,11 @@ def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, l
     except FileNotFoundError:
         print("processed_summaries.tsv not found, processing the summaries...")
 
-    #load data/moviesummaries/plot_summaries.txt
+    # Load data/moviesummaries/plot_summaries.txt
     plot_summaries = pd.read_csv(path + 'moviesummaries/plot_summaries.txt', sep='\t', header=None)
     plot_summaries.columns = ["Wikipedia movie ID", "Summary"]
 
-    # summaries
+    # Summaries
     # First we copy all_movies and filter to only keep movies with a plot summary
     plot_summaries = plot_summaries.dropna(subset=['Summary'])
 
@@ -273,41 +268,17 @@ def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, l
         print("Casefolding...")
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word.lower() for word in x])
 
-    '''
-    ORIGINAL
-    # remove stop words
-    if stop_words or movie_film:
-        print("Removing stop words / movie_film...")
-        stop_words = set()
-        if stop_words:
-            stop_words = set(stopwords.words('english'))
-        if movie_film:
-            stop_words.add('film')
-            stop_words.add('movie')
-        stop_words = set(stopwords.words('english'))
-        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
-    '''
-
-    # MODIFICATION
     # remove stop words and common words
     if stop_words:
         print("Removing stop words and common words/names...")
         stop_words = set(stopwords.words('english'))
         if movie_film:
             print("Removing common words...")
-            stop_words.update(['film', 'films', 'movie', 'movies'])  # Use update to add multiple elements           
+            stop_words.update(['film', 'films', 'movie', 'movies'])        
         if remove_names:
             print("Removing common names...")
             stop_words.update(array_names)
         plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word in x if word.lower() not in stop_words])
-
-    ''' 
-    # POS tag to remove NNP (proper nouns) and NNPS (plural proper nouns)
-    if pos_tag:
-        print("POS tagging...")
-        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: nltk.pos_tag(x))
-        plot_summaries['Summary'] = plot_summaries['Summary'].apply(lambda x: [word for word, tag in x if tag != 'NNP' and tag != 'NNPS'])
-    '''
 
     # lemmatize
     if lemmatize:
