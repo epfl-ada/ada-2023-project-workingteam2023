@@ -5,6 +5,7 @@ import datetime
 import requests
 import string
 import nltk
+import pycountry_convert as pc
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 nltk.download('averaged_perceptron_tagger')
@@ -324,3 +325,23 @@ def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, l
         plot_summaries.to_csv(path + 'moviesummaries/processed_summaries.tsv', sep='\t', index=False)
 
     return plot_summaries
+
+
+def country_to_continent(country):
+    """
+    # Return the continent of a country
+
+    params: 
+        country: the name of the country
+    return:
+        the continent of the country
+    """
+
+
+    if country not in pc.map_countries().keys():
+        return np.nan
+    
+    pc.country_name_to_country_alpha2(country)
+    continent_code = pc.country_alpha2_to_continent_code(pc.country_name_to_country_alpha2(country))
+    continent_name = pc.convert_continent_code_to_continent_name(continent_code)
+    return continent_name
