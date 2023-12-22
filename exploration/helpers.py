@@ -10,6 +10,7 @@ nltk.download('averaged_perceptron_tagger')
 from sklearn.metrics.pairwise import cosine_similarity
 from skfda.inference.hotelling import hotelling_t2
 from skfda.representation.grid import FDataGrid
+import pycountry_convert as pc
 
 
 fear_categories = ['war','climate change', 'terrorism', 'pandemic', 'economic collapse', 'technology', 'alien']
@@ -461,3 +462,23 @@ def median_agg(data):
 
 def sum_agg(data):
     return sum(data)
+
+
+def country_to_continent(country):
+    """
+    # Return the continent of a country
+
+    params: 
+        country: the name of the country
+    return:
+        the continent of the country
+    """
+
+
+    if country not in pc.map_countries().keys():
+        return np.nan
+    
+    pc.country_name_to_country_alpha2(country)
+    continent_code = pc.country_alpha2_to_continent_code(pc.country_name_to_country_alpha2(country))
+    continent_name = pc.convert_continent_code_to_continent_name(continent_code)
+    return continent_name
