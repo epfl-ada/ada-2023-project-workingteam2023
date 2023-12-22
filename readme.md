@@ -24,42 +24,30 @@ Examining the patterns of societal fears provides a deeper insight into the broa
 The IMDb dataset and our dataset use different identifiers for movies, IMDb employs "tconst," while our dataset uses the Freebase movie ID. In order to merge these datasets, we must establish a link between the two sets of IDs. We retrieve the correspondance from the Wikidata query service by performing a query in SPARSQL. Subsequently, we generate a correspondence table, removing any duplicate entries. With this completed correspondence table, we can proceed to merge the two datasets seamlessly.
 
 
+## Files
+'helpers.py' contains all functions that are used for preprocessing purposes.
+'main.ipynb' is the main notebook containing all the code and results.
+All preprocessed data can be found under 'data/MovieSummaries' folder.
+
 ## Methods 
-Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies.
+* Pre-processing: to filter and arrange our data, we used the classic preprocessing methods.
+* NLP topic detection: we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA). LDA is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to perform topic detection on the plot summaries in order to point out particular fears depicted in the movies.
+* Lexicons: to highlight the different fear categories, we create one lexicon per fear with the Empath() library.
 
 ## Proposed timeline 
 1. Assess a list of fears that we want to extract from movies plot
 2. Process the original data: clean, merge and display general interesting features of our data
 3. Process the additional data: clean and merge it with the original data
-4. Perform NLP on the plot to extract movies that treat those fears. Class them by fear domains. 
-5. Analyze the data from those movies (number of movies, release date, IMDb reviews, ...) 
-4. Draw plots depicting interesting trends from our results
-5. Create the website, display all our interesting results and draw a conclusion of our analysis
+4. Perform NLP on the plot to extract movies that treat those fears. 
+5. Create a lexicon per fear categories, to chose which movies depict which fear.
+6. Analyze the data from those movies, such as the IMDb average score or the crhonological and geographical distribution. Draw plots depicting interesting trends from our results
+7. Conduct a precise analysis on war movies, based on their genre and their lexison. Draw plots depicting interesting trends from our results
+8. Create the website, display all our interesting results and draw a conclusion of our analysis
  
-
-## Organization within the team: A list of internal milestones up until project Milestone P3. 
-Octavio and Faye were responsible for writing the README file.  
-Clara, Romain and Colin were responsible for writing the Notebook. Clara focused on cleaning, merging and drawing general trends of the orginal dataset. Romain was responsible of handling the additional dataset. Colin started the NLP analysis on the plot summaries.
-We all did some personal research on the subject and helped eachother for our respective parts.
-
-
-# Milestone P3
-## Datastory
-You can access our datastory by following [this link](octavioprofeta.github.io).
-
-## Files
-
-'helpers.py' contains all function that are used for preprocessing purposes.
-'main.ipynb' is the main notebook containing all the code and results.
-
-## Data
-
-All preprocessed data can be found under 'data/MovieSummaries' folder.
-
 ## Team members contribution
-
-* Faye : Lexicon creation, graphs and visualisation
-* Colin : Optimisation, data cleaning, algorithm creation
-* Romain : Sentiment analysis, graphs and visualisation
-* Clara : Preprocessing, NLP pipeline
-* Octavio : Website building
+* Faye: Analysis on fear categories, graphs and visualisation
+* Colin: Optimisation, data cleaning, algorithm creation
+* Romain: Lexicon creation, graphs and visualisation
+* Clara: NLP topic detection, study case on war movies
+* Octavio: Website building
+Note: we often worked together on someone's computer. Thus, git contributions are not perfectly representative of the work done by each of the members.
