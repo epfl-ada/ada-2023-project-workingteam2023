@@ -114,8 +114,8 @@ def link_tconst_freebaseID():
     return pd.DataFrame(data={'tconst': tconst, 'Freebase movie ID': freebase_id})
 
 
-
-def print_lda_infos(lda, count_vectorizer, count_data, all_movies):
+# ENLEVER
+# def print_lda_infos(lda, count_vectorizer, count_data, all_movies):
     """
     Print the topics found by the LDA model
     
