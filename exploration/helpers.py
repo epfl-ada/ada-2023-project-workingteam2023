@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import datetime
 import requests
-import string
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -112,48 +111,6 @@ def link_tconst_freebaseID():
         freebase_id.append(freebase_id_val)
 
     return pd.DataFrame(data={'tconst': tconst, 'Freebase movie ID': freebase_id})
-
-
-
-def print_lda_infos(lda, count_vectorizer, count_data, all_movies):
-    """
-    Print the topics found by the LDA model
-    
-    params:
-        lda: the LDA model
-        count_vectorizer: the count vectorizer
-        count_data: the count data
-    """
-    # Print the topics found by the LDA model
-    print("Number of topics:" + str(lda.n_components) + "\n")
-    print("Topics found via LDA:")
-    for topic_idx, topic in enumerate(lda.components_):
-        print("Topic %d:" % (topic_idx))
-        print(" ".join([count_vectorizer.get_feature_names_out()[i]
-                        for i in topic.argsort()[:-10 - 1:-1]]))
-        
-    # for each topic, find the most relevant documents
-    n_top_docs = 3
-    topic_values = lda.transform(count_data)
-
-    # Create a dataframe with the top n documents in each topic
-    top_docs = pd.DataFrame()
-    for topic_idx, topic in enumerate(lda.components_):
-        top_docs[str(topic_idx)] = topic_values[:,topic_idx].argsort()[:-n_top_docs-1:-1]
-
-    # Add the top documents to the dataframe
-    for col in top_docs.columns:
-        top_docs[col] = top_docs[col].apply(lambda x: (all_movies.iloc[x]['Summary'], all_movies.iloc[x]['Movie genres']))
-
-    # Print the top documents for each topic
-    print("Top documents for each topic:")
-    for topic_idx, topic in enumerate(top_docs.columns):
-        print("Topic %d:" % (topic_idx))
-        print(top_docs[topic].values)
-    
-    print("\n")
-    print("---------------------------------------------------------")
-    print("\n")
 
 
 
