@@ -7,6 +7,12 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 nltk.download('averaged_perceptron_tagger')
+from sklearn.metrics.pairwise import cosine_similarity
+from skfda.inference.hotelling import hotelling_t2
+from skfda.representation.grid import FDataGrid
+
+
+fear_categories = ['war','climate change', 'terrorism', 'pandemic', 'economic collapse', 'technology', 'alien']
 
 
 
@@ -267,3 +273,191 @@ def get_summaries(path, punctuation=True, casefolding = True, stop_words=True, l
         plot_summaries.to_csv(path + 'moviesummaries/processed_summaries.tsv', sep='\t', index=False)
 
     return plot_summaries
+
+
+# top k function that returns the top k words for each topic
+def top_k(data, category, k):
+    return data.sort_values(by=category, ascending=False).head(k)
+
+# top k function that returns the top k words for all topics as a list
+def top_k_all(data, categories, k):
+    top_k_all = []
+    for category in categories:
+        top_k_all.append(top_k(data, category, k))
+    return top_k_all
+
+# top threshold function that returns the documents with a frequency above a threshold for each topic
+def top_threshold(data, category, threshold):
+    return data[data[category] >= threshold].sort_values(by=category, ascending=False)
+
+# top threshold function that returns the documents with a frequency above a threshold for all topics as a list
+def top_threshold_all(data, categories, threshold):
+    top_threshold_all = []
+    for category in categories:
+        top_threshold_all.append(top_threshold(data, category, threshold))
+    return top_threshold_all
+
+# top p function that returns the top p % documents for each topic
+def top_p(data, category, p):
+    return data[data[category] >= data[category].quantile(p)].sort_values(by=category, ascending=False)
+
+# top p function that returns the top p % documents for all topics as a list
+def top_p_all(data, categories, p):
+    top_p_all = []
+    for category in categories:
+        top_p_all.append(top_p(data, category, p))
+    return top_p_all
+
+# functions to compute similarity between two sets of movies, based on their lexicon values
+# cosine similarity based function: since the lexicon values are positive, the cosine similarity return values between 0 and 1
+def cos_similarity(movie_set_1, movie_set_2, lexicon_columns = fear_categories):
+    
+    # Extract the relevant columns for the sets
+    set_1_data = movie_set_1[lexicon_columns].values
+    set_2_data = movie_set_2[lexicon_columns].values
+
+    # Calculate the cosine similarity
+    similarity_matrix = cosine_similarity(set_1_data, set_2_data)
+
+    # Calculate the overall similarity as the mean of all similarities
+    overall_similarity = similarity_matrix.mean()
+
+    return overall_similarity
+
+# euclidean distance based function
+def euclidean_similarity(movie_set_1, movie_set_2, lexicon_columns = fear_categories):
+    
+    # Extract the relevant columns for the sets
+    set_1_data = movie_set_1[lexicon_columns].values
+    set_2_data = movie_set_2[lexicon_columns].values
+
+    # Calculate the euclidean distance
+    distance_matrix = np.linalg.norm(set_1_data - set_2_data, axis=1)
+
+    # Calculate the overall distance as the mean of all distances
+    overall_distance = distance_matrix.mean()
+
+    return -overall_distance
+
+# Hotelling's T2 based function
+def hotelling_similarity(movie_set_1, movie_set_2, lexicon_columns = fear_categories):
+    
+    # Extract the relevant columns for the sets
+    set_1_data = movie_set_1[lexicon_columns].values
+    set_2_data = movie_set_2[lexicon_columns].values
+
+    # put the data as FData
+    set_1_data = FDataGrid(set_1_data)
+    set_2_data = FDataGrid(set_2_data)
+
+    # Calculate the Hotelling's T2
+    t2 = hotelling_t2(set_1_data, set_2_data)
+
+    return -t2
+
+# function to optimize the number of top documents to keep for each category with respect to the similarity to a random set of movies
+def top_optimize(data, category, similarity, lower, upper, agg, r=10, seed=42):
+    """Optimize the number of top documents to keep for a given category with respect to the similarity to a random set of movies
+
+    Args:
+        data (DataFrame): DataFrame containing the documents
+        category (str): category to optimize
+        similarity (function): similarity function to use
+        lower (int): lower bound of the number of documents to keep
+        upper (int): upper bound of the number of documents to keep
+        agg (function): aggregation function to use on the random graphs similarities
+        r (int, optional): number of random sets of movies to use for similarity. Defaults to 10.
+        seed (int, optional): seed to use for the random sets of movies. Defaults to 42.
+
+    Returns:
+        DataFrame: DataFrame containing the top documents
+        list: list of similarities for each number of documents
+    """
+    sorted_data = data.sort_values(by=category, ascending=False)
+    similarities = []
+    for k in range(lower, upper):
+        # get the top k documents
+        top_k = sorted_data.head(k)
+        
+        # Create r random sets of movies of size k
+        random_sets = []
+        for i in range(r):
+            random_sets.append(data.sample(k, random_state=seed + i))
+
+        # compute the similarity between the top k documents and each random set of movies
+        random_sets_similarities = []
+        for random_set in random_sets:
+            random_sets_similarities.append(similarity(top_k, random_set))
+
+        # compute the similarity between the top k documents and the r random sets of movies together
+        similarities.append(agg(random_sets_similarities))
+
+    # get the index of the lowest similarity
+    index = similarities.index(min(similarities))
+    
+    return sorted_data.head(lower + index), similarities
+
+# function to optimize the number of top documents to keep over all categories with respect to the similarity to a random set of movies
+def top_optimize_all(data, categories, similarity, lower, upper, r_agg, cat_agg, r=10, seed=42):
+    """Optimize the number of top documents to keep over all categories with respect to the similarity to a random set of movies
+
+    Args:
+        data (DataFrame): DataFrame containing the documents
+        categories (list): list of categories to optimize
+        similarity (function): similarity function to use
+        lower (int): lower bound of the number of documents to keep
+        upper (int): upper bound of the number of documents to keep
+        r_agg (function): aggregation function to use on the random graphs similarities
+        cat_agg (function): aggregation function to use on the categories similarities
+        r (int, optional): number of random sets of movies to use for similarity. Defaults to 10.
+        seed (int, optional): seed to use for the random sets of movies. Defaults to 42.
+
+    Returns:
+        DataFrame: DataFrame containing the top documents
+        list: list of similarities for each number of documents
+    """
+    sorted_data = top_k_all(data, categories, upper)
+    similarities = []
+    for k in range(lower, upper):
+        # Create r random sets of movies of size k
+        random_sets = []
+        for i in range(r):
+            random_sets.append(data.sample(k, random_state=seed + i))
+
+        categories_similarities = []
+
+        for category in categories:
+            # get the top k documents for each category
+            top_k = sorted_data[categories.index(category)].head(k)
+
+            # compute the similarity between the top k documents and each random set of movies
+            random_sets_similarities = []
+            for random_set in random_sets:
+                random_sets_similarities.append(similarity(top_k, random_set, categories))
+
+            # compute the similarity between the top k documents and the r random sets of movies together
+            categories_similarities.append(r_agg(random_sets_similarities))
+
+        # aggregate categories similarities
+        similarities.append(cat_agg(categories_similarities))
+
+    # get the index of the lowest similarity
+    index = similarities.index(min(similarities))
+
+    return top_k_all(data, categories, lower + index), similarities
+
+# max, min, mean, median, sum aggregate functions
+def max_agg(data):
+    return max(data)
+
+def min_agg(data):
+    return min(data)
+
+def mean_agg(data):
+    return np.mean(data)
+
+def median_agg(data):
+    return np.median(data)
+
+def sum_agg(data):
+    return sum(data)
