@@ -1,13 +1,14 @@
-# Milestone P2
-## Title 
-From Alien Invasions to Global Pandemics: Exploring the Evolution of Film Themes in Response to Societal Fears  
+# When Society's Greatest Fears hit the Big Screen
+
+## Datastory
+Discover how societal fears are depicted in the datastory through our website: [Datastory](https://octavioprofeta.github.io/ "datastory") 
 
 ## Abstract 
 In this project, we will analyze the chronological evolution of movies’ themes in relation to society’s fears. Fears have evolved significantly over the decades, shifting from the apprehension of war in the mid-20th century to concerns about emerging technologies during the industrial era, and more recently, to anxieties surrounding pandemics and climate change.   
 By analyzing movies’ emerging themes in the plot, the evolution of movies’ genre as well as the movies’ success (based on the IMDb rating), we can depict how the movie industry responded to the emergence and disappearance of major fears in the society. This analysis can be conducted on a global scale as well as on a regional scale.  
 Examining the patterns of societal fears provides a deeper insight into the broader aspects of society. It reflects the historical, political and cultural context of the world across the years.
 
-## Research Questions: A list of research questions you would like to address during the project. 
+## Research Questions
 1. What are the primary domains of fear explored in the database's movies, and how do they evolve chronologically? 
 2. Do movies addressing current societal fears tend to have higher IMDb ratings compared to those exploring other themes? 
 3. How has the number of movies addressing major global fears evolved since the dataset's inception? 
@@ -17,13 +18,14 @@ Examining the patterns of societal fears provides a deeper insight into the broa
 7. What evolution of the society can we depict from all of the previous results?
 
 
-## Proposed additional datasets (if any): List the additional dataset(s) you want to use (if any), and some ideas on how you expect to get, manage, process, and enrich it/them. Show us that you’ve read the docs and some examples, and that you have a clear idea on what to expect. Discuss data size and format if relevant. It is your responsibility to check that what you propose is feasible. 
-1. IMDb: Incorporating the IMDb dataset into our analysis provides additional insights into the movies. Since there is a lot of missing values for the movies' box office revenues, will use the weighted average ratings data from title.ratings.tsv.gz to quantify a movie's success. IMDb is a recognised source for movie reviews. We therefore trust their methods for collecting and weighting this data. 
+## Dataset
+1. CMU Movie Summary Corpus. This dataset contains more than 42’000 movie plot summaries as well as general information about the movie such as the release date or the production country
+2. IMDb: Incorporating the IMDb dataset into our analysis provides additional insights into the movies. Since there is a lot of missing values for the movies' box office revenues, will use the weighted average ratings data from title.ratings.tsv.gz to quantify a movie's success. IMDb is a recognised source for movie reviews. We therefore trust their methods for collecting and weighting this data. 
 The IMDb dataset and our dataset use different identifiers for movies, IMDb employs "tconst," while our dataset uses the Freebase movie ID. In order to merge these datasets, we must establish a link between the two sets of IDs. We retrieve the correspondance from the Wikidata query service by performing a query in SPARSQL. Subsequently, we generate a correspondence table, removing any duplicate entries. With this completed correspondence table, we can proceed to merge the two datasets seamlessly.
 
 
 ## Methods 
-Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies, namely the fear of war, of climate change, of corruption, of terrorism, of civilization collapse, of pandemic, of technology and of aliens. Although some themes already stand out, we will need to refine our methods for M3 in order to single out precise fears. The work done does however seem promising. 
+Appart from the classic preprocessing methods that we used to filter and arrange our data, we used Natural Language Processing (NLP), and in particular the Latent Dirichlet Allocation (LDA), which is a generative statistical model used to classify text in a document to a particular topic. It builds a topic per document model and words per topic model, modeled as Dirichlet distributions. We used the LDA to look for particular fears in the plot summaries of the movies.
 
 ## Proposed timeline 
 1. Assess a list of fears that we want to extract from movies plot
